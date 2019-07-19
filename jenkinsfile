@@ -3,7 +3,9 @@ pipeline {
     
     stages {
         stage('initialize') {
-          code.create.groovy
+          steps {
+            code.create.groovy
+            }
         }
     }
 }
