@@ -41,7 +41,9 @@ def CreateFolder() {
 
 pipeline {
     agent any 
-    
+    parameters {
+  	string defaultValue: '', description: '', name: 'folderName', trim: false
+    }
     stages {
         stage ('initialize') {
             steps {
