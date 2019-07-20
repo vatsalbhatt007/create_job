@@ -1,11 +1,12 @@
 pipeline {
-    agent any
-    
-    stages {
-        stage('initialize') {
-          steps {
-            code.create.groovy
-            }
+  agent any
+  stages {
+    stage ('Hello World') {
+      steps {
+        script {
+          sh ('env')
         }
+      }
     }
+  }
 }
