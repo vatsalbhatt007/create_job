@@ -1,0 +1,67 @@
+@NonCPS
+import hudson.plugins.git.*
+import hudson.plugins.git.extensions.*
+import hudson.plugins.git.extensions.impl.*
+import jenkins.model.Jenkins
+def CreateProject() {
+        def jobParameters = [
+          name:          project_name,
+          description:   description,
+          repository:    git_url,
+          branch:        branch,
+          credentialId:  keys,
+          jenkinsfilePath:   jenkinsfilePath
+        ]
+        
+        def branchConfig                =   [new BranchSpec(jobParameters.branch)]
+        def userConfig                  =   [new UserRemoteConfig(jobParameters.repository, null, null, jobParameters.credentialId)]
+        def cleanBeforeCheckOutConfig   =   new CleanBeforeCheckout()
+        def scm                         =   new GitSCM(userConfig, branchConfig, false, [], null, null, null)
+        
+        // define SCM flow
+        def flowDefinition = new org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition(scm, jenkinsfilePath)
+        
+        // set lightweight checkout
+        flowDefinition.setLightweight(true)
+        
+        // get Jenkins instance
+        Jenkins jenkins = Jenkins.getInstance()
+        
+        // create the job
+        def job = new org.jenkinsci.plugins.workflow.job.WorkflowJob(jenkins,jobParameters.name)
+        
+        // define job type
+        job.definition = flowDefinition
+        
+        // set job description
+        job.setDescription(jobParameters.description)
+        
+        // save to disk
+        jenkins.save()
+        jenkins.reload()
+    }
+pipeline {
+    agent any 
+    
+    parameters {
+        string defaultValue: '', description: '', name: 'project_name', trim: false
+        text defaultValue: '', description: '', name: 'description'
+        string defaultValue: '', description: '', name: 'git_url', trim: false
+        string defaultValue: 'master', description: '', name: 'branch', trim: false
+        string defaultValue: '', description: '', name: 'keys', trim: false
+        string defaultValue: 'Jenkinsfile', description: '', name: 'jenkinsfilePath', trim: false
+     }
+
+    stages {
+        stage ('initialize') {
+            steps {
+                script {
+                    for (entry in params) {
+                        println ("${entry.key} - ${entry.value}")
+                    }
+                    CreateProject()
+                }
+            }
+        }
+     }
+}
