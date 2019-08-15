@@ -1,10 +1,17 @@
 pipeline {
   agent any
   stages {
-    stage ('Hello World') {
+    stage ('verify') {
       steps {
         script {
-          sh ('env')
+          sh ('sudo docker run --rm -it hashicorp/terraform version')
+        }
+      }
+    }
+    stage ('select workspace') {
+      steps {
+        script {
+          sh ('sudo docker run --rm -it -v `pwd`:/infra/ -w /infra/ hashicorp/terraform workspace list /infra/')
         }
       }
     }
