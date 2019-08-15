@@ -12,6 +12,7 @@ pipeline {
       steps {
         script {
           sh ('docker run --rm -i -v `pwd`:/infra/ -w /infra/ hashicorp/terraform workspace list /infra/')
+          sh ('docker run --rm -i -v `pwd`:/infra/ -w /infra/ hashicorp/terraform init /infra/')
         }
       }
     }
