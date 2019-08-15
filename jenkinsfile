@@ -15,7 +15,7 @@ pipeline {
         }
       }
     }
-    stage ('') {
+    stage ('terraform init') {
       steps {
         script {
           sh ('docker run --rm -i -v `pwd`:/infra/ -w /infra/ hashicorp/terraform init -no-color /infra/')
