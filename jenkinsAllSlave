@@ -14,11 +14,12 @@ for (aSlave in hudson.model.Hudson.instance.slaves) {
   println('\tcomputer.getDemandStartMilliseconds: ' + aSlave.getComputer().getDemandStartMilliseconds());
   println('\tcomputer.isOffline: ' + aSlave.getComputer().isOffline());
   println('\tcomputer.countBusy: ' + aSlave.getComputer().countBusy());
+  println('\tcomputer.getLog: ' + aSlave.getComputer().getLog());
+  println('\tcomputer.getBuilds: ' + aSlave.getComputer().getBuilds());
   if (aSlave.name =~ 'training' ) {
     println('Shutting down node!!!!');
     aSlave.getComputer().setTemporarilyOffline(true,null);
-  //  aSlave.getComputer().doDoDelete();
+    aSlave.getComputer().doDoDelete();
   }
-  println('\tcomputer.getLog: ' + aSlave.getComputer().getLog());
-  println('\tcomputer.getBuilds: ' + aSlave.getComputer().getBuilds());
+  
 }
