@@ -1,0 +1,12 @@
+import com.cloudbees.hudson.plugins.folder.*
+Jenkins.instance.getAllItems(AbstractItem.class).each {
+  if( it instanceof Folder) {
+    if (it.fullName =~ "training") {
+    println(it.fullName)
+      println "${it.fullName} will be removed."
+      it.doDisable()
+      it.delete()
+      println "${it.fullName} has been removed."
+    }  
+  }
+}
