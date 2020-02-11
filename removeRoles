@@ -1,0 +1,17 @@
+import com.michelin.cio.hudson.plugins.rolestrategy.*
+import com.synopsys.arc.jenkins.plugins.rolestrategy.RoleType;
+
+def authStrategy = Hudson.instance.getAuthorizationStrategy()
+
+authStrategy.getGrantedRoles("projectRoles").each{ role ->
+  if (role.key.getName() =~ "giseh") {
+    println("Project role name: "+role.key.getName())
+      role.value.each { assignee ->
+      println("assigned to: "+assignee)
+  	authStrategy.doRemoveRoles("projectRoles",role.key.getName()).each { RemoveRole -> 
+  	println ("Role "+ role.key.getName() + "Removed.")} 
+      }
+    }
+}
+
+
