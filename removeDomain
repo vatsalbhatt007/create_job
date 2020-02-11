@@ -1,0 +1,12 @@
+import com.cloudbees.plugins.credentials.domains.Domain
+import com.cloudbees.plugins.credentials.SystemCredentialsProvider.StoreImpl
+
+def StoreImpl str = new StoreImpl()
+def lDomain = str.getDomains()
+for( i in lDomain){
+  if(i.getName() =~ "demo") {
+    println "removing:- " + i.getName();
+  str.removeDomain(i)}
+  //println i.getName()
+
+}
